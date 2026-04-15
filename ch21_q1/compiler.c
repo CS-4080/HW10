@@ -1521,4 +1521,16 @@ void markCompilerRoots() {
     compiler = compiler->enclosing;
   }
 }
+
+static int makeConstantUnique(Chunk* chunk, Value value) {
+  // check if constant already exists
+  for (int i = 0; i < chunk->constants.count; i++) {
+    if (valuesEqual(chunk->constants.values[i], value)) {
+      return i; // reuse existing index
+    }
+  }
+
+  // otherwise, add new constant
+  return addConstant(chunk, value);
+}
 //< Garbage Collection mark-compiler-roots
